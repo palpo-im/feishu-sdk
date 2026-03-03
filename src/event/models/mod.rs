@@ -1,17 +1,47 @@
+pub mod acs;
+pub mod apaas;
 pub mod application;
 pub mod approval;
 pub mod calendar;
+pub mod compensation;
 pub mod contact;
+pub mod corehr;
 pub mod drive;
+pub mod ext;
+pub mod helpdesk;
+pub mod hire;
 pub mod im;
+pub mod mail;
+pub mod meeting_room;
+pub mod moments;
+pub mod payroll;
+pub mod performance;
+pub mod security_and_compliance;
+pub mod task;
+pub mod vc;
 
+pub use acs::*;
+pub use apaas::*;
 pub use application::*;
 pub use approval::*;
 pub use calendar::*;
+pub use compensation::*;
 pub use contact::*;
+pub use corehr::*;
 pub use drive::*;
+pub use ext::*;
+pub use helpdesk::*;
+pub use hire::*;
 pub use im::*;
+pub use mail::*;
+pub use meeting_room::*;
+pub use moments::*;
+pub use payroll::*;
+pub use performance::*;
+pub use security_and_compliance::*;
 use serde::{Deserialize, Serialize};
+pub use task::*;
+pub use vc::*;
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EventHeader {

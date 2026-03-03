@@ -7,8 +7,8 @@ use serde::Serialize;
 use serde_json::Value;
 
 use crate::core::{
-    ApiRequest, ApiResponse, CacheRef, CoreClient, Error, HttpClientRef, LogLevel, LoggerRef,
-    RequestOptions,
+    AccessTokenType, ApiRequest, ApiResponse, CacheRef, CoreClient, Error, HttpClientRef, LogLevel,
+    LoggerRef, RequestOptions,
 };
 use crate::generated::{Endpoint, find_endpoint};
 use crate::utils::SerializerRef;
@@ -141,6 +141,83 @@ impl Client {
         let body = serde_json::to_value(body)?;
         self.call(operation_id, path_params, query, Some(body), options)
             .await
+    }
+
+    pub async fn request(
+        &self,
+        method: Method,
+        api_path: impl Into<String>,
+        query: Vec<(String, String)>,
+        body: Option<Value>,
+        options: RequestOptions,
+    ) -> Result<ApiResponse, Error> {
+        let mut req = ApiRequest::new(method, api_path.into());
+        req.query = query;
+        req.body = body;
+        req.supported_token_types = vec![
+            AccessTokenType::None,
+            AccessTokenType::App,
+            AccessTokenType::Tenant,
+            AccessTokenType::User,
+        ];
+        self.core.request(&req, &options).await
+    }
+
+    pub async fn get(
+        &self,
+        api_path: impl Into<String>,
+        query: Vec<(String, String)>,
+        options: RequestOptions,
+    ) -> Result<ApiResponse, Error> {
+        self.request(Method::GET, api_path, query, None, options)
+            .await
+    }
+
+    pub async fn post(
+        &self,
+        api_path: impl Into<String>,
+        query: Vec<(String, String)>,
+        body: Option<Value>,
+        options: RequestOptions,
+    ) -> Result<ApiResponse, Error> {
+        self.request(Method::POST, api_path, query, body, options)
+            .await
+    }
+
+    pub async fn put(
+        &self,
+        api_path: impl Into<String>,
+        query: Vec<(String, String)>,
+        body: Option<Value>,
+        options: RequestOptions,
+    ) -> Result<ApiResponse, Error> {
+        self.request(Method::PUT, api_path, query, body, options)
+            .await
+    }
+
+    pub async fn patch(
+        &self,
+        api_path: impl Into<String>,
+        query: Vec<(String, String)>,
+        body: Option<Value>,
+        options: RequestOptions,
+    ) -> Result<ApiResponse, Error> {
+        self.request(Method::PATCH, api_path, query, body, options)
+            .await
+    }
+
+    pub async fn delete(
+        &self,
+        api_path: impl Into<String>,
+        query: Vec<(String, String)>,
+        options: RequestOptions,
+    ) -> Result<ApiResponse, Error> {
+        self.request(Method::DELETE, api_path, query, None, options)
+            .await
+    }
+
+    pub fn user_access_token(&self, token: impl Into<String>) -> RequestOptions {
+        RequestOptions::new().user_access_token(token)
     }
 }
 

@@ -65,7 +65,7 @@ impl CoreClient {
             "Request: {} {} (token_type={:?})",
             req.method, req.api_path, token_type
         ));
-        if self.config.logger.is_enabled(LogLevel::Debug) {
+        if self.config.log_req_at_debug && self.config.logger.is_enabled(LogLevel::Debug) {
             self.config.logger.debug(&format!(
                 "Request details: query={:?}, path_params={:?}, body={}",
                 req.query,
@@ -117,7 +117,7 @@ impl CoreClient {
             resp.status,
             resp.body.len()
         ));
-        if self.config.logger.is_enabled(LogLevel::Debug) {
+        if self.config.log_req_at_debug && self.config.logger.is_enabled(LogLevel::Debug) {
             self.config.logger.debug(&format!(
                 "Response details: headers={:?}, body={}",
                 resp.headers,

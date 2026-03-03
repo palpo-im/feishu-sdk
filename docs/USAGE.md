@@ -51,3 +51,26 @@ let config = Config::builder("app_id", "app_secret")
     .app_ticket("app_ticket")
     .build();
 ```
+
+## 6. Direct HTTP Helpers
+
+```rust
+use feishu_sdk::core::RequestOptions;
+
+let resp = client
+    .get("/open-apis/contact/v3/users", vec![], RequestOptions::default())
+    .await?;
+```
+
+## 7. Message Card Builder
+
+```rust
+use feishu_sdk::card_builder::{ButtonBuilder, MessageCardBuilder};
+
+let card = MessageCardBuilder::new()
+    .template("blue")
+    .title("Deploy Result")
+    .text("Deployment finished successfully.")
+    .button(ButtonBuilder::new("Open Log").kind("primary"))
+    .build();
+```

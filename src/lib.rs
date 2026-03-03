@@ -1,5 +1,6 @@
 pub mod api;
 pub mod card;
+pub mod card_builder;
 pub mod client;
 pub mod core;
 pub mod event;

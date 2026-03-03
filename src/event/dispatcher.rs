@@ -25,6 +25,14 @@ impl EventDispatcherConfig {
         Self::default()
     }
 
+    pub fn from_sdk_config(config: &crate::core::Config) -> Self {
+        Self {
+            verification_token: None,
+            encrypt_key: None,
+            skip_signature_verification: config.skip_sign_verify,
+        }
+    }
+
     pub fn verification_token(mut self, token: impl Into<String>) -> Self {
         self.verification_token = Some(token.into());
         self

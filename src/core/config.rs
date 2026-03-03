@@ -39,6 +39,8 @@ pub struct Config {
     pub serializer: SerializerRef,
     pub request_timeout: Option<Duration>,
     pub helpdesk_credentials: Option<HelpdeskCredentials>,
+    pub skip_sign_verify: bool,
+    pub log_req_at_debug: bool,
 }
 
 impl std::fmt::Debug for Config {
@@ -50,6 +52,8 @@ impl std::fmt::Debug for Config {
             .field("enable_token_cache", &self.enable_token_cache)
             .field("log_level", &self.log_level)
             .field("request_timeout", &self.request_timeout)
+            .field("skip_sign_verify", &self.skip_sign_verify)
+            .field("log_req_at_debug", &self.log_req_at_debug)
             .finish()
     }
 }
@@ -70,6 +74,8 @@ impl Config {
             serializer: default_serializer(),
             helpdesk_id: None,
             helpdesk_token: None,
+            skip_sign_verify: false,
+            log_req_at_debug: false,
         }
     }
 
@@ -102,6 +108,8 @@ pub struct ConfigBuilder {
     serializer: SerializerRef,
     helpdesk_id: Option<String>,
     helpdesk_token: Option<String>,
+    skip_sign_verify: bool,
+    log_req_at_debug: bool,
 }
 
 impl ConfigBuilder {
@@ -165,6 +173,16 @@ impl ConfigBuilder {
         self
     }
 
+    pub fn skip_sign_verify(mut self, skip: bool) -> Self {
+        self.skip_sign_verify = skip;
+        self
+    }
+
+    pub fn log_req_at_debug(mut self, enabled: bool) -> Self {
+        self.log_req_at_debug = enabled;
+        self
+    }
+
     pub fn build(self) -> Config {
         Config {
             base_url: self.base_url.clone(),
@@ -190,6 +208,8 @@ impl ConfigBuilder {
                 }),
                 _ => None,
             },
+            skip_sign_verify: self.skip_sign_verify,
+            log_req_at_debug: self.log_req_at_debug,
         }
     }
 }
@@ -207,6 +227,8 @@ mod tests {
             .base_url(LARK_BASE_URL)
             .log_level(LogLevel::Debug)
             .request_timeout(Duration::from_secs(30))
+            .skip_sign_verify(true)
+            .log_req_at_debug(true)
             .helpdesk("hd_123", "token_abc")
             .build();
 
@@ -215,6 +237,8 @@ mod tests {
         assert_eq!(config.request_timeout, Some(Duration::from_secs(30)));
         assert!(config.helpdesk_credentials.is_some());
         assert!(config.http_client.is_some());
+        assert!(config.skip_sign_verify);
+        assert!(config.log_req_at_debug);
     }
 
     #[test]

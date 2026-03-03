@@ -228,6 +228,13 @@ See the `examples/` directory:
 - `get_token.rs` - Get tenant access token
 - `send_message.rs` - Send a message
 - `get_user.rs` - Get user information
+- `im_v1_message.rs` - IM message operations
+- `drive_v1_file.rs` - Drive file operations
+- `calendar_v4.rs` - Calendar operations
+- `docx_v1.rs` - Docx document operations
+- `sheets_v3.rs` - Sheets operations
+- `bitable_v1.rs` - Bitable operations
+- `approval_v4.rs` - Approval operations
 - `event_server.rs` - Event handling server
 - `card_handler.rs` - Card callback server
 - `websocket_client.rs` - WebSocket client
@@ -255,6 +262,7 @@ cargo run --features websocket --example websocket_client
 - Usage guide: [`docs/USAGE.md`](docs/USAGE.md)
 - FAQ: [`docs/FAQ.md`](docs/FAQ.md)
 - Migration guide: [`docs/MIGRATION.md`](docs/MIGRATION.md)
+- Best practices: [`docs/BEST_PRACTICES.md`](docs/BEST_PRACTICES.md)
 
 ## Error Handling
 

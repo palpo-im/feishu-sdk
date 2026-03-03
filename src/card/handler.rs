@@ -60,6 +60,11 @@ impl CardActionHandler {
         self
     }
 
+    pub fn with_sdk_config(mut self, config: &crate::core::Config) -> Self {
+        self.skip_signature_verification = config.skip_sign_verify;
+        self
+    }
+
     pub fn handler<F, Fut>(mut self, handler: F) -> Self
     where
         F: Fn(super::models::CardAction) -> Fut + Send + Sync + 'static,
