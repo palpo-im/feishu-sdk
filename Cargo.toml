@@ -10,7 +10,7 @@ keywords = ["feishu", "lark", "sdk", "api"]
 categories = ["api-bindings", "web-programming"]
 
 [dependencies]
-reqwest = { version = "0.13.2", default-features = true, features = [
+reqwest = { version = "0.13.2", default-features = false, features = [
     "json",
     "multipart",
     "rustls",
@@ -34,8 +34,9 @@ sha2 = "0.10"
 chrono = "0.4"
 async-trait = "0.1"
 salvo = { version = "0.89", optional = true }
-tokio-tungstenite = { version = "0.28.0", features = [
-    "rustls-tls-webpki-roots",
+rustls = { version = "0.23", default-features = false, features = ["aws-lc-rs"], optional = true }
+tokio-tungstenite = { version = "0.28.0", default-features = true, features = [
+    "rustls-tls-webpki-roots", "__rustls-tls"
 ], optional = true }
 futures-util = { version = "0.3", optional = true }
 bytes = { version = "1", optional = true }
@@ -48,7 +49,7 @@ criterion = { version = "0.8", features = ["async_tokio"] }
 [features]
 default = []
 server = ["salvo", "dep:bytes"]
-websocket = ["tokio-tungstenite", "futures-util", "dep:bytes", "dep:prost"]
+websocket = ["rustls", "tokio-tungstenite", "futures-util", "dep:bytes", "dep:prost"]
 
 [[bench]]
 name = "performance"
